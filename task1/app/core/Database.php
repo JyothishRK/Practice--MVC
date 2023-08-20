@@ -1,6 +1,6 @@
 <?php
 
-trait Database
+class Database
 {
     private function connect()
     {
@@ -11,7 +11,7 @@ trait Database
     public function query($query,$data=[])
     {
         $con=$this->connect();
-        $stm=$con->prepare($query); 
+        $stm=$con->prepare($query);
         $check=$stm->execute($data);
         if($check)
         {

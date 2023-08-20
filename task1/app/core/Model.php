@@ -1,9 +1,8 @@
 <?php
 
-trait Model
+class Model extends Database
 {
-    use Database;
-
+    protected $table = 'students';
     protected $limit = 10;
     protected $offset = 0;
 
@@ -11,7 +10,7 @@ trait Model
     {
         $keys = array_keys($data);
         $query = "insert into $this->table (".implode(",",$keys).") values (:".implode(",:",$keys).")";
-        //echo $query;
+        echo $query;
         $this->query($query,$data);       
         return false;
     }
@@ -20,7 +19,7 @@ trait Model
     {
         $data[$id_column]=$id;
         $query = "delete from $this->table where $id_column = :$id_column";
-        //echo $query;
+        echo $query;
         $this->query($query,$data);       
         return false;
     }
