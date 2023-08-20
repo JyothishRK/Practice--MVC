@@ -1,0 +1,225 @@
+<?php
+        // Create a connection
+        $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Retrieve data from the database
+        $sql = "SELECT Name, Marks FROM students";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row["Name"] . "</td>";
+                echo "<td>" . $row["Marks"] . "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='3'>No records found</td></tr>";
+        }
+
+        $conn->close();
+        ?>
+
+-->Home view
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insert Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin-top: 10px;
+            color: #333333;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insert Data</h1>
+        
+        <?php
+        // ... Your PHP code for data insertion ...
+
+        ?>
+        
+        <form method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="marks">Marks:</label>
+            <input type="number" id="marks" name="marks" required>
+            
+            <button type="submit">Insert Data</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+--> Chart view
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Data Graphs</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .graph-container {
+            width: 50%; /* Each graph takes half of the available width */
+            height: 400px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <?php
+    // Create a connection to the database
+    $conn = new mysqli(DBHOST,DBUSER,DBPASS,DBNAME); // Replace with actual credentials
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Retrieve data from the database
+    $sql = "SELECT name, age, marks, gender FROM students"; // Replace 'students' with your table name
+    $result = $conn->query($sql);
+
+    // Process data for each graph
+    $ageData = array();
+    $marksData = array();
+    $maleCount = 0;
+    $femaleCount = 0;
+
+    while ($row = $result->fetch_assoc()) {
+        $ageData[] = array($row['name'], (int)$row['age']);
+        $marksData[] = array($row['name'], (int)$row['marks']);
+
+        if ($row['gender'] == 'Male') {
+            $maleCount++;
+        } else {
+            $femaleCount++;
+        }
+    }
+
+    $conn->close();
+    ?>
+
+    <div class="graph-container">
+        <h2>Age Distribution</h2>
+        <div id="age_chart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <div class="graph-container">
+        <h2>Marks Distribution</h2>
+        <div id="marks_chart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <div class="graph-container">
+        <h2>Gender Distribution</h2>
+        <div id="gender_chart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <div class="graph-container">
+        <h2>Other Graph</h2>
+        <div id="other_chart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // Age Distribution Chart
+            var ageData = google.visualization.arrayToDataTable(<?php echo json_encode($ageData); ?>);
+            var ageOptions = {
+                title: 'Age Distribution',
+                hAxis: { title: 'Age' },
+                vAxis: { title: 'Number of Students' }
+            };
+            var ageChart = new google.visualization.ColumnChart(document.getElementById('age_chart'));
+            ageChart.draw(ageData, ageOptions);
+
+            // Marks Distribution Chart
+            var marksData = google.visualization.arrayToDataTable(<?php echo json_encode($marksData); ?>);
+            var marksOptions = {
+                title: 'Marks Distribution',
+                hAxis: { title: 'Marks' },
+                vAxis: { title: 'Number of Students' }
+            };
+            var marksChart = new google.visualization.ColumnChart(document.getElementById('marks_chart'));
+            marksChart.draw(marksData, marksOptions);
+
+            // Gender Distribution Chart
+            var genderData = google.visualization.arrayToDataTable([
+                ['Gender', 'Count'],
+                ['Male', <?php echo $maleCount; ?>],
+                ['Female', <?php echo $femaleCount; ?>]
+            ]);
+            var genderOptions = {
+                title: 'Gender Distribution'
+            };
+            var genderChart = new google.visualization.PieChart(document.getElementById('gender_chart'));
+            genderChart.draw(genderData, genderOptions);
+
+            // Other Graph
+            // You can add data and options for the fourth graph here
+        }
+    </script>
+</body>
+</html>
