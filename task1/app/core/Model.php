@@ -1,8 +1,9 @@
 <?php
 
-class Model extends Database
+trait Model
 {
-    protected $table = 'students';
+    use Database;
+
     protected $limit = 10;
     protected $offset = 0;
 
@@ -10,7 +11,7 @@ class Model extends Database
     {
         $keys = array_keys($data);
         $query = "insert into $this->table (".implode(",",$keys).") values (:".implode(",:",$keys).")";
-        echo $query;
+        //echo $query;
         $this->query($query,$data);       
         return false;
     }
@@ -19,7 +20,7 @@ class Model extends Database
     {
         $data[$id_column]=$id;
         $query = "delete from $this->table where $id_column = :$id_column";
-        echo $query;
+        //echo $query;
         $this->query($query,$data);       
         return false;
     }
