@@ -42,6 +42,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,10 +59,37 @@ $conn->close();
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+        }
+
+        .options {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .options a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
         .graph-container {
-            max-width: 500px;
-            margin: 20px auto;
+            max-width: 400px;
+            margin: 100px auto;
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -70,19 +98,18 @@ $conn->close();
         }
     </style>
 </head>
+
 <body>
-    <!-- <div style="max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f5f5f5; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-        <h2>Chronological Diversity Palette</h2>
-        <canvas id="avgAgeByGenderChart"></canvas>
-    </div> -->
+    <div class="header">
+        <div class="options">
+            <a href="home">Insert-data</a>
+            <a href="table">Table</a>
+        </div>
+    </div>
     <div class="graph-container">
         <h2>Age Distribution</h2>
-        <canvas id="ageChart"></canvas>
+        <canvas id="ageChart" width="800" height="400"></canvas>
     </div>
-    <!-- <div class="graph-container">
-        <h2>Diversity Wheel Overview</h2>
-        <canvas id="genderChart"></canvas>
-    </div> -->
 
     <script>
         var ageLabels = <?php echo json_encode(array_column($ageData, 'age'), JSON_NUMERIC_CHECK); ?>;
@@ -90,7 +117,7 @@ $conn->close();
 
         var ageChartCanvas = document.getElementById('ageChart').getContext('2d');
         var ageChart = new Chart(ageChartCanvas, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
                 labels: ageLabels,
                 datasets: [{
@@ -126,51 +153,10 @@ $conn->close();
             }
         });
 
-
-        var genderLabels = <?php echo json_encode(array_column($genderData, 'gender')); ?>;
-        var genderCounts = <?php echo json_encode(array_column($genderData, 'count'), JSON_NUMERIC_CHECK); ?>;
-
-        var genderChartCanvas = document.getElementById('genderChart').getContext('2d');
-        var genderChart = new Chart(genderChartCanvas, {
-            type: 'doughnut',
-            data: {
-                labels: genderLabels,
-                datasets: [{
-                    data: genderCounts,
-                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-            }
-        });
-
-        var genders = <?php echo json_encode(array_column($avgAgeByGenderData, 'gender')); ?>;
-        var avgAges = <?php echo json_encode(array_column($avgAgeByGenderData, 'avg_age'), JSON_NUMERIC_CHECK); ?>;
-
-        var avgAgeByGenderChartCanvas = document.getElementById('avgAgeByGenderChart').getContext('2d');
-        var avgAgeByGenderChart = new Chart(avgAgeByGenderChartCanvas, {
-            type: 'bar',
-            data: {
-                labels: genders,
-                datasets: [{
-                    label: 'Average Age',
-                    data: avgAges,
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-                
+        function redirectTo(pageUrl) {
+            window.location.href = pageUrl;
+        }
     </script>
 </body>
+
 </html>
