@@ -27,6 +27,8 @@
     <table>
         <tr>
             <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
             <th>Marks</th>
         </tr>
         <?php
@@ -39,13 +41,15 @@
         }
 
         // Retrieve data from the database
-        $sql = "SELECT Name, Marks FROM students";
+        $sql = "SELECT Name,Age,Gender,Marks FROM students";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . $row["Name"] . "</td>";
+                echo "<td>" . $row["Age"] . "</td>";
+                echo "<td>" . $row["Gender"] . "</td>";
                 echo "<td>" . $row["Marks"] . "</td>";
                 echo "</tr>";
             }
