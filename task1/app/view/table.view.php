@@ -10,7 +10,7 @@
         }
 
         .header {
-            background-color: #4CAF50; /* Light green color */
+            background-color: #4CAF50;
             color: #ffffff;
             padding: 10px 20px;
             display: flex;
@@ -21,7 +21,7 @@
         .options {
             display: flex;
             gap: 20px;
-            margin-left: 20px; /* Added margin */
+            margin-left: 20px;
         }
 
         .option {
@@ -35,28 +35,27 @@
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px; /* Added margin */
+            margin-top: 20px;
         }
 
         .student-data {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px; /* Added margin */
+            margin-top: 20px; 
         }
 
         h1 {
-            text-align: center; /* Center align the heading */
+            text-align: center;
             color: #333333;
             margin-bottom: 20px;
-            /* Added margin to create space */
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
-            font-size: 16px; /* Increase font size */
-            margin-top: 20px; /* Added margin */
+            font-size: 16px; 
+            margin-top: 20px; 
         }
 
         th, td {

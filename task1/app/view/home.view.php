@@ -11,7 +11,7 @@
         }
 
         .header {
-            background-color: #4CAF50; /* Light green color */
+            background-color: #4CAF50; 
             color: #ffffff;
             padding: 10px 20px;
             display: flex;
@@ -22,7 +22,7 @@
         .options {
             display: flex;
             gap: 20px;
-            margin-left: 20px; /* Added margin */
+            margin-left: 20px;
         }
 
         .option {
@@ -36,14 +36,14 @@
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px; /* Added margin */
+            margin-top: 20px; 
         }
 
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px; /* Added margin */
+            margin-top: 20px; 
         }
 
         label {
@@ -90,7 +90,6 @@
         <h1>Insert Data</h1>
 
         <?php
-        // Check if the form is submitted
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $name = $_POST["Name"];
             $age = $_POST["Age"];
